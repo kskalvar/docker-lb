@@ -1,0 +1,37 @@
+#!/bin/bash
+shopt -s expand_aliases
+
+
+if [ -z "$1" ]
+then
+   echo "pull-web <nodes>"
+   exit
+fi
+
+if [ -z "$KV_IP" ]
+then
+   echo export KV_IP=`docker-machine ip consul`
+   exit
+fi
+
+for i in "$@"
+do
+
+   node=`docker-machine ls --format {{.Name}} | grep ^$i`
+   if [ -z "$node" ]
+   then
+      echo "$i does not exist"
+      exit
+   fi
+done
+
+for i in "$@"
+do
+   echo $i;
+   eval $(docker-machine env $i);
+   docker build -t dockerlb_web .
+   docker tag dockerlb_web localhost:5000/dockerlb_web
+   docker push localhost:5000/dockerlb_web
+
+   docker rmi dockerlb_web localhost:5000/dockerlb_web python:2.7
+done

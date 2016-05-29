@@ -1,0 +1,25 @@
+#!/bin/bash
+shopt -s expand_aliases
+
+if [ -z "$1" ]
+then
+   echo "start-registry <docker machine> <docker machine> ..."
+   exit
+fi
+
+for i in "$@"
+do
+   node=`docker-machine ls --format {{.Name}} | grep ^$i`
+   if [ -z "$node" ]
+   then
+      echo "$i does not exist"
+      exit
+   fi
+done
+
+for i in "$@"
+do
+   echo $i;
+   docker $(docker-machine config $i) run -d -p 127.0.0.1:5000:5000 --name=reg-$i --net=registry_default jpetazzo/hamba:latest 5000 backend:5000
+
+done

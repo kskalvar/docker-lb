@@ -1,0 +1,20 @@
+#!/bin/bash
+shopt -s expand_aliases
+
+if [ -z "$1" ]
+then
+   echo "add-swarm-node-aws <swarm node>"
+   exit
+fi
+
+echo
+echo
+echo "**** Create $1"
+sleep 15
+docker-machine create -d amazonec2 --amazonec2-access-key=$amazonec2_access_key --amazonec2-secret-key=$amazonec2_secret_key \
+--amazonec2-vpc-id=$amazonec2_vpc_id --engine-opt "cluster-store consul://$(docker-machine ip consul):8500" \
+--engine-opt "cluster-advertise eth0:2376" --swarm  --swarm-discovery consul://$(docker-machine ip consul):8500 \
+$1
+
+echo
+docker-machine ls

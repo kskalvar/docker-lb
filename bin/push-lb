@@ -1,0 +1,38 @@
+#!/bin/bash
+shopt -s expand_aliases
+
+
+if [ -z "$1" ]
+then
+   echo "push-lb <nodes>"
+   exit
+fi
+
+if [ -z "$KV_IP" ]
+then
+   echo export KV_IP=`docker-machine ip consul-machine`
+   exit
+fi
+
+for i in "$@"
+do
+
+   node=`docker-machine ls --format {{.Name}} | grep ^$i`
+   if [ -z "$node" ]
+   then
+      echo "$i does not exist"
+      exit
+   fi
+done
+
+for i in "$@"
+do
+   echo $i;
+   eval $(docker-machine env $i);
+
+   docker build -t dockerlb_lb .
+   docker tag dockerlb_lb localhost:5000/dockerlb_lb
+   docker push localhost:5000/dockerlb_lb
+
+   docker rmi dockerlb_lb localhost:5000/dockerlb_lb nginx
+done

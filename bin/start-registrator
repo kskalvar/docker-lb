@@ -1,0 +1,28 @@
+#!/bin/bash
+shopt -s expand_aliases
+
+if [ -z "$1" ]
+then
+   echo "start-registrator <docker machine> <docker machine> ..."
+   exit
+fi
+
+for i in "$@"
+do
+   node=`docker-machine ls --format {{.Name}} | grep ^$i`
+   if [ -z "$node" ]
+   then
+      echo "$i does not exist"
+      exit
+   fi
+done
+
+for i in "$@"
+do
+   echo $i;
+   docker $(docker-machine config $i) run -d --name=registrator \
+   --volume=/var/run/docker.sock:/tmp/docker.sock \
+   gliderlabs/registrator:latest \
+   -ip $(docker-machine ip $i) \
+   consul://$(docker-machine ip consul):8500
+done
