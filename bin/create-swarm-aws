@@ -21,6 +21,7 @@ sleep 15
 curl http://$(docker-machine ip consul):8500/v1/catalog/services
 
 echo
+echo
 echo "**** Create swarm master"
 docker-machine create -d amazonec2 --amazonec2-access-key=$amazonec2_access_key --amazonec2-secret-key=$amazonec2_secret_key --amazonec2-vpc-id=$amazonec2_vpc_id --swarm --swarm-master --swarm-discovery="consul://$(docker-machine ip consul):8500" --engine-opt="cluster-store=consul://$(docker-machine ip consul):8500" --engine-opt="cluster-advertise=eth0:2376" swarm-master
 

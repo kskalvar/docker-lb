@@ -19,7 +19,8 @@ done
 
 for i in "$@"
 do
-   echo $i;
+   echo
+   echo start-registrator $i; 
    docker $(docker-machine config $i) run -d --name=registrator \
    --volume=/var/run/docker.sock:/tmp/docker.sock \
    gliderlabs/registrator:latest \

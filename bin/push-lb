@@ -10,7 +10,7 @@ fi
 
 if [ -z "$KV_IP" ]
 then
-   echo export KV_IP=`docker-machine ip consul-machine`
+   echo "export KV_IP=\`docker-machine ip consul\`"
    exit
 fi
 
@@ -27,7 +27,8 @@ done
 
 for i in "$@"
 do
-   echo $i;
+   echo
+   echo push-lb $i;
    eval $(docker-machine env $i);
 
    docker build -t dockerlb_lb .

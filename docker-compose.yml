@@ -10,7 +10,7 @@ services:
     networks:
       - front-tier
     environment:
-      - "constraint:node==swarm-node-1"
+      - "constraint:node==/swarm-node-[1]/"
       - APP_NAME=dockerlb_web
       - CONSUL_URL=${KV_IP}:8500
 
@@ -21,9 +21,10 @@ services:
     networks:
       - front-tier
     environment:
-      - "constraint:node==/swarm-node-[23456789]/"
+      - "reschedule:on-node-failure"
+      - "constraint:node==/swarm-node-[123456789]/"
       - SERVICE_CHECK_HTTP=/
-      - SERVICE_CHECK_INTERVAL=15s
+      - SERVICE_CHECK_INTERVAL=5s
 
 networks:
   front-tier:
