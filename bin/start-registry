@@ -1,26 +1,17 @@
 #!/bin/bash
 shopt -s expand_aliases
 
-if [ -z "$1" ]
+node=`docker-machine ls --format {{.Name}} | grep swarm | grep -v swarm-registry`
+if [ -z "$node" ]
 then
-   echo "start-registry <docker machine> <docker machine> ..."
+   echo "no swarm exist"
    exit
 fi
 
-for i in "$@"
-do
-   node=`docker-machine ls --format {{.Name}} | grep ^$i`
-   if [ -z "$node" ]
-   then
-      echo "$i does not exist"
-      exit
-   fi
-done
-
-for i in "$@"
+for i in $node
 do
    echo
    echo start-registry $i;
-   docker $(docker-machine config $i) run -d -p 127.0.0.1:5000:5000 --name=reg-$i --net=registry_default jpetazzo/hamba:latest 5000 backend:5000
-
+   docker $(docker-machine config $i) run -d -p 127.0.0.1:5000:5000 --name=reg-$i \
+   --net=registry_default jpetazzo/hamba:latest 5000 backend:5000
 done

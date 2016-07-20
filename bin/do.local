@@ -11,8 +11,8 @@ push-lb swarm-registry
 mygit
 cd docker-lb/web
 push-web swarm-registry
-start-registry swarm-master swarm-node-1
-start-registrator swarm-node-1
+start-registry
+start-registrator
 
 echo
 echo "eval \$(docker-machine env --swarm swarm-master)"

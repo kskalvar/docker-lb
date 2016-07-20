@@ -2,7 +2,7 @@
 shopt -s expand_aliases
 source $HOME/.workspace
 
-create-swarm-aws swarm-node 3
+create-swarm-aws swarm-node 1
 eval $(docker-machine env --swarm swarm-master)
 export KV_IP=`docker-machine ip consul`
 mygit
@@ -11,8 +11,8 @@ push-lb swarm-registry
 mygit
 cd docker-lb/web
 push-web swarm-registry
-start-registry swarm-master swarm-node-1 swarm-node-2 swarm-node-3
-start-registrator swarm-node-1 swarm-node-2 swarm-node-3
+start-registry
+start-registrator
 
 echo
 echo "eval \$(docker-machine env --swarm swarm-master)"

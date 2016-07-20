@@ -1,5 +1,4 @@
 version: '2'
-
 services:
   lb:
     image: localhost:5000/dockerlb_lb:latest
@@ -10,9 +9,13 @@ services:
     networks:
       - front-tier
     environment:
-      - "constraint:node==/swarm-node-[1]/"
+      - "reschedule:on-node-failure"
+      - "constraint:node==/swarm-node-[123456789]/"
       - APP_NAME=dockerlb_web
       - CONSUL_URL=${KV_IP}:8500
+      - SERVICE_CHECK_HTTP=/
+      - SERVICE_CHECK_INTERVAL=5s
+      - SERVICE_CHECK_TIMEOUT=1s
 
   web:
     image: localhost:5000/dockerlb_web:latest
@@ -25,6 +28,7 @@ services:
       - "constraint:node==/swarm-node-[123456789]/"
       - SERVICE_CHECK_HTTP=/
       - SERVICE_CHECK_INTERVAL=5s
+      - SERVICE_CHECK_TIMEOUT=1s
 
 networks:
   front-tier:

@@ -3,11 +3,10 @@ shopt -s expand_aliases
 
 if [ -z "$1" ]
 then
-   echo "add-swarm-node-local <swarm node>"
+   echo "add-swarm-node-local <swarm-node-[123456789]>"
    exit
 fi
 
-echo
 echo
 echo "**** Create $1"
 sleep 15

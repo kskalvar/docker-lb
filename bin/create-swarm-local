@@ -13,7 +13,7 @@ docker-machine create -d virtualbox consul
 
 echo
 echo "**** Start Consul Service"
-docker $(docker-machine config consul) run -d --name=consul -p 8500:8500 gliderlabs/consul-server -bootstrap
+docker $(docker-machine config consul) run -d -h consul --name=consul -p 8500:8500 gliderlabs/consul-server -bootstrap
 
 echo
 echo "**** Test Consul Service"
@@ -72,4 +72,3 @@ docker info
 echo
 echo "eval \$(docker-machine env --swarm swarm-master)"
 echo "export KV_IP=\`docker-machine ip consul\`"
-
