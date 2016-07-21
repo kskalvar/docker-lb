@@ -2,7 +2,13 @@
 shopt -s expand_aliases
 source $HOME/.workspace
 
-create-swarm-aws swarm-node 1
+if [ -z "$1" ]
+then
+   echo "do.aws <number of swarm nodes>"
+   exit
+fi
+
+create-swarm-aws swarm-node $1
 eval $(docker-machine env --swarm swarm-master)
 export KV_IP=`docker-machine ip consul`
 mygit

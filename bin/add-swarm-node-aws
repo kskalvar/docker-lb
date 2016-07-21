@@ -15,5 +15,8 @@ docker-machine create -d amazonec2 --amazonec2-access-key=$amazonec2_access_key 
 --engine-opt "cluster-advertise eth0:2376" --swarm  --swarm-discovery consul://$(docker-machine ip consul):8500 \
 $1
 
+start-registry
+start-registrator
+
 echo
 docker-machine ls

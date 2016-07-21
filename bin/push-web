@@ -1,7 +1,6 @@
 #!/bin/bash
 shopt -s expand_aliases
 
-
 if [ -z "$1" ]
 then
    echo "pull-web <nodes>"
