@@ -3,7 +3,7 @@ shopt -s expand_aliases
 
 if [ -z "$1" ]
 then
-   echo "add-swarm-node-local <swarm-node-[123456789]>"
+   echo "add-swarm-node-local <swarm node>"
    exit
 fi
 
